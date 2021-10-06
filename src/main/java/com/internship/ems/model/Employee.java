@@ -21,6 +21,7 @@ public class Employee {
     @NotEmpty(message = "No last name given")
     private String lastName;
     @NotNull(message = "not valid")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @NotNull
     @Min(value = 18)
