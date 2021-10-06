@@ -1,22 +1,33 @@
 package com.internship.ems.model;
 
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "department")
+@Table(name = "department", schema = "EMS")
 @Data
 
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long  departmentId;
-    @NotNull
-    @Size(min= 2, max = 50, message = "Not valid name")
+    @NotEmpty(message = "No name given")
     private String name;
     private String description;
+
+
+    @PreRemove
+    public void PreRemove(){
+        System.out.println("Entity "+this+" will be removed.");
+    }
+
+    @PostRemove
+    public void PostRemove(){
+        System.out.println("Entity "+this+" was removed.");
+    }
 }

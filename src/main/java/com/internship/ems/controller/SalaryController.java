@@ -8,6 +8,7 @@ import com.internship.ems.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,20 +22,21 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
+@Validated
 public class SalaryController {
     @Autowired
     SalaryService service;
 
-//    @PostMapping("/addSalary")
-//    public Salary addSalary(@Valid @RequestBody Salary salary){
-//
-//        return service.save(salary);
-//    }
-@PostMapping("/addSalary")
-public ResponseEntity<Salary> addSalary(@Valid @RequestBody Salary salary){
-    Salary saveSalary = service.save(salary);
-    return new ResponseEntity<Salary>(saveSalary, HttpStatus.CREATED);
-}
+    @PostMapping("/addSalary")
+    public Salary addSalary(@Valid @RequestBody Salary salary){
+
+        return service.save(salary);
+    }
+//@PostMapping("/addSalary")
+//public ResponseEntity<Salary> addSalary(@Valid @RequestBody Salary salary){
+//    Salary saveSalary = service.save(salary);
+//    return new ResponseEntity<Salary>(saveSalary, HttpStatus.CREATED);
+//}
 
     @GetMapping("/salary")
     public List<Salary> getAllSalary(){

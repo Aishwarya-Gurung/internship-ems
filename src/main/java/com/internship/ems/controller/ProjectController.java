@@ -10,6 +10,7 @@ import com.internship.ems.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,20 +24,21 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
+@Validated
 public class ProjectController {
     @Autowired
     ProjectService service;
 
-//    @PostMapping("/addProject")
-//    public Project addProject(@Valid @RequestBody Project project){
-//
-//        return service.save(project);
-//    }
-@PostMapping("/addProject")
-public ResponseEntity<Project> addProject(@Valid @RequestBody Project project){
-    Project saveProject = service.save(project);
-    return new ResponseEntity<Project>(saveProject, HttpStatus.CREATED);
-}
+    @PostMapping("/addProject")
+    public Project addProject(@Valid @RequestBody Project project){
+
+        return service.save(project);
+    }
+//@PostMapping("/addProject")
+//public ResponseEntity<Project> addProject(@Valid @RequestBody Project project){
+//    Project saveProject = service.save(project);
+//    return new ResponseEntity<Project>(saveProject, HttpStatus.CREATED);
+//}
 
     @GetMapping("/project")
     public List<Project> getAllProject(){

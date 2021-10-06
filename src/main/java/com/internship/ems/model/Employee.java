@@ -1,40 +1,47 @@
 package com.internship.ems.model;
 
+import com.internship.ems.enums.Gender;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", schema = "EMS", uniqueConstraints= {@UniqueConstraint(columnNames={"email"})})
 @Data
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  employeeId;
-    @NotNull
-    @Size(min=2, max = 50, message = "Not valid first name")
+    private long employeeId;
+    @NotEmpty(message = "No first name given")
     private String firstName;
-    @NotNull
-    @Size(min=2, max = 50, message = "Not valid last name")
+    @NotEmpty(message = "No last name given")
     private String lastName;
+    @NotNull(message = "not valid")
+    private Gender gender;
     @NotNull
-    @Size(min = 4)
-    private String gender;
-    @NotNull
-   @Min(20)
+    @Min(value = 18)
     private int age;
-    @NotNull
-    @Size(min=7, message = "email not valid")
+    @NotEmpty
+    @Email
     private String email;
-    @NotNull
-    @Size(min=2, message = "Invalid")
+//    @NotEmpty(message = "No designation given")
+    @Column(name = "designation", nullable = false)
     private String designation;
-    @NotNull
+//    @NotNull(message = "No hire date given")
     private Date hireDate;
     private Date resignedDate;
     private String address;
+
+    @PrePersist
+    public void PrePersist(){
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = LocalDate.now();
+        this.setHireDate(Date.from(localDate.atStartOfDay(defaultZoneId).toInstant()));
+    }
+
+
 }

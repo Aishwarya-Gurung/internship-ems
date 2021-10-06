@@ -5,6 +5,7 @@ import com.internship.ems.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,21 +18,22 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 public class DepartmentController {
     @Autowired
     DepartmentService service;
 
-//    @PostMapping("/addDepartment")
-//    public Department addDepartment(@Valid @RequestBody Department department){
-//
-//        return service.save(department);
-//    }
-
     @PostMapping("/addDepartment")
-    public ResponseEntity<Department> addDepartment(@Valid @RequestBody Department department){
-        Department saveDepartment = service.save(department);
-        return new ResponseEntity<Department>(saveDepartment, HttpStatus.CREATED);
+    public Department addDepartment(@Valid @RequestBody Department department){
+
+        return service.save(department);
     }
+
+//    @PostMapping("/addDepartment")
+//    public ResponseEntity<Department> addDepartment(@Valid @RequestBody Department department){
+//        Department saveDepartment = service.save(department);
+//        return new ResponseEntity<Department>(saveDepartment, HttpStatus.CREATED);
+//    }
     @GetMapping("/department")
     public List<Department> getAllDepartment(){
 
