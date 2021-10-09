@@ -1,7 +1,10 @@
 package com.internship.ems.dao;
 
 import com.internship.ems.model.Department;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DepartmentRepository extends CrudRepository<Department, Long> {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 }

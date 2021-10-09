@@ -1,7 +1,10 @@
 package com.internship.ems.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.internship.ems.enums.Gender;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -10,13 +13,16 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "employee", schema = "EMS", uniqueConstraints= {@UniqueConstraint(columnNames={"email"})})
 @Data
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long employeeId;
-    @NotEmpty(message = "No first name given")
+    @Column(insertable=false, updatable = false, nullable = false, columnDefinition = "varchar(255) default 'John Snow'")
+    @NotEmpty
     private String firstName;
     @NotEmpty(message = "No last name given")
     private String lastName;
@@ -36,6 +42,25 @@ public class Employee {
     private Date hireDate;
     private Date resignedDate;
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "departmentId")
+    private Department department;
+
+    @OneToOne
+    @JoinColumn(name = "salaryId")
+    public Salary salary;
+
+    @JsonBackReference(value = "employee-department")
+    public Department getDepartment(){
+        return department;
+    }
+
+    @JsonBackReference(value = "employee-salary")
+    public Salary getSalary(){
+        return salary;
+    }
+
 
     @PrePersist
     public void PrePersist(){

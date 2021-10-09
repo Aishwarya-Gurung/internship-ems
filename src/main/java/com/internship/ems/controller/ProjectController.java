@@ -1,5 +1,6 @@
 package com.internship.ems.controller;
 
+import com.internship.ems.dto.ProjectDto;
 import com.internship.ems.model.Department;
 import com.internship.ems.model.Project;
 import com.internship.ems.model.Salary;
@@ -29,38 +30,29 @@ public class ProjectController {
     @Autowired
     ProjectService service;
 
-    @PostMapping("/addProject")
-    public Project addProject(@Valid @RequestBody Project project){
-
-        return service.save(project);
-    }
-//@PostMapping("/addProject")
-//public ResponseEntity<Project> addProject(@Valid @RequestBody Project project){
-//    Project saveProject = service.save(project);
-//    return new ResponseEntity<Project>(saveProject, HttpStatus.CREATED);
-//}
-
     @GetMapping("/project")
-    public List<Project> getAllProject(){
-
+    public List<ProjectDto> getAllProject(){
         return service.getAll();
     }
 
     @GetMapping("/project/{id}")
-    public Project getProjectById(@PathVariable Long id){
-
+    public ProjectDto getProjectById(@PathVariable Long id){
         return service.getById(id);
     }
 
-
+    @PostMapping("/addProject")
+    public ProjectDto saveProject(@Valid @RequestBody ProjectDto projectDto){
+        return service.saveProject(projectDto);
+    }
 
     @PutMapping("/updateProject/{id}")
-    public Project updateProject(@PathVariable Long id, @RequestBody Project projectInfo) {
-        return service.updateProject(id, projectInfo);
+    public ProjectDto updateProject(@PathVariable Long id,@RequestBody ProjectDto projectInfoDto){
+        return service.updateProject(id, projectInfoDto);
     }
 
     @DeleteMapping("/deleteProject/{id}")
-    public String removeProject(@PathVariable Long id){
+    public String deleteProject(@PathVariable Long id){
         return service.deleteProject(id);
     }
+
 }

@@ -1,8 +1,10 @@
 package com.internship.ems.service;
 
+import com.internship.ems.Mapper.ProjectMapper;
 import com.internship.ems.dao.ProjectRepository;
 import com.internship.ems.dao.SalaryRepository;
 import com.internship.ems.dao.UserRepository;
+import com.internship.ems.dto.ProjectDto;
 import com.internship.ems.model.Project;
 import com.internship.ems.model.Salary;
 import com.internship.ems.model.User;
@@ -19,34 +21,38 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepo;
 
-    public Project save(Project project){
+    @Autowired
+    private ProjectMapper projectMapper;
 
-        return projectRepo.save(project);
+    public ProjectDto saveProject(ProjectDto projectDto){
+        Project projectModel = projectMapper.dtoToModel(projectDto);
+        return  projectMapper.modelToDto( projectRepo.save(projectModel) );
     }
 
-    public List<Project> getAll() {
-        List<Project> result = new ArrayList<>();
-        projectRepo.findAll().forEach(result::add);
-        return result;
-    }
-    public Project getById(long id) {
+    public ProjectDto getById(Long id){
+        Project projectWithSearchedId = projectRepo.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        return projectRepo.findById(id).orElseThrow(EntityNotFoundException::new);
+        return  projectMapper.modelToDto( projectRepo.findById(id).orElseThrow(EntityNotFoundException::new) );
     }
 
-    public Project updateProject(long id, Project newProject) {
+    public List<ProjectDto> getAll(){
+        return projectMapper.modelsToDtos( (List<Project>) projectRepo.findAll() );
+    }
+
+    public ProjectDto updateProject(Long id, ProjectDto newProjectDto){
+        Project newProjectModel= projectMapper.dtoToModel( newProjectDto );
+
         Project project = projectRepo.findById(id).orElseThrow(EntityNotFoundException::new);
-        project.setName(newProject.getName());
-        project.setDescription(newProject.getDescription());
+        project.setName(newProjectModel.getName());
+        project.setDescription(newProjectModel.getDescription());
         projectRepo.save(project);
-        return project;
+
+        return projectMapper.modelToDto( project );
     }
-
-
 
     public String deleteProject(Long id){
-
         projectRepo.deleteById(id);
-        return "Project of id" + " " + id + " " + "is deleted.";
+
+        return "Id " +id+" deleted!! ";
     }
 }

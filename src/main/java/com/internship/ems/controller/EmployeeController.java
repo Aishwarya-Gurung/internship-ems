@@ -1,5 +1,6 @@
 package com.internship.ems.controller;
 
+import com.internship.ems.dto.EmployeeDto;
 import com.internship.ems.model.*;
 import com.internship.ems.service.EmployeeService;
 import com.internship.ems.service.ProjectService;
@@ -26,38 +27,28 @@ public class EmployeeController {
     @Autowired
     EmployeeService service;
 
-    @PostMapping("/addEmployee")
-    public Employee addEmployee(@Valid @RequestBody Employee employee){
-
-        return service.save(employee);
-    }
-//@PostMapping("/addEmployee")
-//public ResponseEntity<Employee> addEmployee(@Valid @RequestBody Employee employee){
-//    Employee saveEmployee = service.save(employee);
-//    return new ResponseEntity<Employee>(saveEmployee, HttpStatus.CREATED);
-//}
-
     @GetMapping("/employee")
-    public List<Employee> getAllEmployee(){
-
+    public List<EmployeeDto> getAllEmployee(){
         return service.getAll();
     }
 
     @GetMapping("/employee/{id}")
-    public Employee getEmployeeById(@PathVariable Long id){
-
+    public EmployeeDto getEmployeeById(@PathVariable Long id){
         return service.getById(id);
     }
 
-
+    @PostMapping("/addEmployee")
+    public ResponseEntity<EmployeeDto> saveEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+        return new ResponseEntity<>(service.saveEmployee(employeeDto), HttpStatus.CREATED);
+    }
 
     @PutMapping("/updateEmployee/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeInfo) {
-        return service.updateEmployee(id, employeeInfo);
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto employeeInfoDto) {
+        return new ResponseEntity<>(service.updateEmployee(id, employeeInfoDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteEmployee/{id}")
-    public String removeEmployee(@PathVariable Long id){
+    public String deleteEmployee(@PathVariable Long id){
         return service.deleteEmployee(id);
     }
 }

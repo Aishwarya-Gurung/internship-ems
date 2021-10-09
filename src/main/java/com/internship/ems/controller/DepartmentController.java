@@ -1,5 +1,6 @@
 package com.internship.ems.controller;
 
+import com.internship.ems.dto.DepartmentDto;
 import com.internship.ems.model.*;
 import com.internship.ems.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,38 +24,31 @@ public class DepartmentController {
     @Autowired
     DepartmentService service;
 
-    @PostMapping("/addDepartment")
-    public Department addDepartment(@Valid @RequestBody Department department){
-
-        return service.save(department);
-    }
-
-//    @PostMapping("/addDepartment")
-//    public ResponseEntity<Department> addDepartment(@Valid @RequestBody Department department){
-//        Department saveDepartment = service.save(department);
-//        return new ResponseEntity<Department>(saveDepartment, HttpStatus.CREATED);
-//    }
     @GetMapping("/department")
-    public List<Department> getAllDepartment(){
-
-        return service.getAll();
+    public ResponseEntity<List<DepartmentDto>> getAll(){
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/department/{id}")
-    public Department getDepartmentById(@PathVariable Long id){
-
+    public DepartmentDto getById(@PathVariable Long id){
         return service.getById(id);
     }
 
-
+    @PostMapping("/addDepartment")
+    public ResponseEntity<DepartmentDto> setLaptop(@RequestBody DepartmentDto departmentDto){
+        return new ResponseEntity<DepartmentDto>(
+                service.saveDepartment(departmentDto), HttpStatus.CREATED);
+    }
 
     @PutMapping("/updateDepartment/{id}")
-    public Department updateDepartment(@PathVariable Long id, @RequestBody Department departmentInfo) {
-        return service.updateDepartment(id, departmentInfo);
+    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDto departmentDto){
+        return new ResponseEntity<DepartmentDto>(
+                service.updateEmployee(id, departmentDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteDepartment/{id}")
-    public String removeDepartment(@PathVariable Long id){
+    public String deleteDepartment(@PathVariable Long id){
         return service.deleteDepartment(id);
     }
+
 }

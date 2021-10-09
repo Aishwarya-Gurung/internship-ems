@@ -1,5 +1,6 @@
 package com.internship.ems.controller;
 
+import com.internship.ems.dto.SalaryDto;
 import com.internship.ems.model.Department;
 import com.internship.ems.model.Salary;
 import com.internship.ems.model.User;
@@ -27,38 +28,30 @@ public class SalaryController {
     @Autowired
     SalaryService service;
 
-    @PostMapping("/addSalary")
-    public Salary addSalary(@Valid @RequestBody Salary salary){
-
-        return service.save(salary);
-    }
-//@PostMapping("/addSalary")
-//public ResponseEntity<Salary> addSalary(@Valid @RequestBody Salary salary){
-//    Salary saveSalary = service.save(salary);
-//    return new ResponseEntity<Salary>(saveSalary, HttpStatus.CREATED);
-//}
-
     @GetMapping("/salary")
-    public List<Salary> getAllSalary(){
-
+    public List<SalaryDto> getAll(){
         return service.getAll();
     }
 
     @GetMapping("/salary/{id}")
-    public Salary getSalaryById(@PathVariable Long id){
-
+    public SalaryDto getSalaryById(@PathVariable Long id){
         return service.getById(id);
     }
 
-
+    @PostMapping("/addSalary")
+    public ResponseEntity<SalaryDto> saveSalary(@Valid @RequestBody SalaryDto salaryDto){
+        return new ResponseEntity<>(service.saveSalary(salaryDto), HttpStatus.CREATED);
+    }
 
     @PutMapping("/updateSalary/{id}")
-    public Salary updateSalary(@PathVariable Long id, @RequestBody Salary salaryInfo) {
-        return service.updateSalary(id, salaryInfo);
+    public ResponseEntity<SalaryDto> updateSalary(@PathVariable Long id, @RequestBody SalaryDto salaryDto){
+        return new ResponseEntity<SalaryDto>( service.updateSalary(id, salaryDto) ,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteSalary/{id}")
-    public String removeSalary(@PathVariable Long id){
-          return service.deleteSalary(id);
+    public String deleteSalary(@PathVariable Long id){
+        service.deleteSalary(id);
+
+        return "Salary of id: "+id+" deleted!!";
     }
 }

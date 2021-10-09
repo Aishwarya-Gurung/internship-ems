@@ -1,12 +1,15 @@
 package com.internship.ems.service;
 
+import com.internship.ems.Mapper.SalaryMapper;
 import com.internship.ems.dao.SalaryRepository;
 import com.internship.ems.dao.UserRepository;
+import com.internship.ems.dto.SalaryDto;
 import com.internship.ems.model.Salary;
 import com.internship.ems.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,35 +19,37 @@ public class SalaryService {
     @Autowired
     private SalaryRepository salaryRepo;
 
-    public Salary save(Salary salary){
+    @Autowired
+    private SalaryMapper salaryMapper;
 
-        return salaryRepo.save(salary);
+    public SalaryDto saveSalary(SalaryDto salaryDto){
+        Salary salaryModel = salaryMapper.dtoToModel( salaryDto );
+        return  salaryMapper.modelToDto( salaryRepo.save(salaryModel) );
     }
 
-    public List<Salary> getAll() {
-        List<Salary> result = new ArrayList<>();
-        salaryRepo.findAll().forEach(result::add);
-        return result;
-    }
-    public Salary getById(long id) {
-
-        return salaryRepo.findById(id).orElseThrow(EntityNotFoundException::new);
+    public SalaryDto getById(Long id){
+        return salaryMapper.modelToDto( salaryRepo.findById(id).orElseThrow(EntityExistsException::new) );
     }
 
-    public Salary updateSalary(long id, Salary newSalary) {
-        Salary salary = salaryRepo.findById(id).orElseThrow(EntityNotFoundException::new);
-        salary.setIssueDate(newSalary.getIssueDate());
-        salary.setAmount(newSalary.getAmount());
-        salary.setBonus(newSalary.getBonus());
-        salaryRepo.save(salary);
-        return salary;
+    public List<SalaryDto> getAll(){
+        return salaryMapper.modelsToDtos( (List<Salary>) salaryRepo.findAll() );
     }
 
+    public SalaryDto updateSalary(Long id, SalaryDto newSalaryDto){
+        Salary salaryModel = salaryMapper.dtoToModel( newSalaryDto );
 
+        Salary existingSalary = salaryRepo.findById(id).orElseThrow(EntityNotFoundException::new);
+        existingSalary.setIssueDate(salaryModel.getIssueDate());
+        existingSalary.setAmount(salaryModel.getAmount());
+        existingSalary.setBonus(salaryModel.getBonus());
+        salaryRepo.save(existingSalary);
+
+        return salaryMapper.modelToDto( existingSalary );
+    }
 
     public String deleteSalary(Long id){
-
         salaryRepo.deleteById(id);
-        return "Salary of id" + " " + id + " " + "is deleted.";
+
+        return "id" +id+" deleted!! ";
     }
 }
