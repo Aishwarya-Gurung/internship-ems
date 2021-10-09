@@ -28,9 +28,9 @@
 ### Post Project
 ![task1](output/postproject.PNG)
 ### Get all Project
-![task1](output/getallsalary.PNG)
+![task1](output/getallproject.PNG)
 ### Get Project by id
-![task1](output/getbyidsalary.PNG)
+![task1](output/getbyidproject.PNG)
 ### Put Project
 ![task1](output/updateproject.PNG)
 ### Delete Project
@@ -41,11 +41,11 @@
 ### Get all Employee
 ![task1](output/getallemployee.PNG)
 ### Get Employee by id
-![task1](output/getbyidsalary.PNG)
+![task1](output/getbyidemployee.PNG)
 ### Get Employee by designation
 ![task1](output/getbydesignationemployee.PNG)
 ### Put Employee
-![task1](output/updateproject.PNG)
+![task1](output/updateemployee.PNG)
 ### Delete Employee
 ![task1](output/deleteemployee.PNG)
 
