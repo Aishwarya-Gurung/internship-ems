@@ -2,6 +2,7 @@ package com.internship.ems.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.internship.ems.enums.Gender;
+import com.internship.ems.listener.EmployeeListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "employee", schema = "EMS", uniqueConstraints= {@UniqueConstraint(columnNames={"email"})})
 @Data
+@EntityListeners(EmployeeListener.class)
+@NamedQuery(name = "Employee.getEmployeeByNamedQuery", query = "select e from Employee e where e.department.departmentId=:id")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

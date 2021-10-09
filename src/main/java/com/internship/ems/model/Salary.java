@@ -1,6 +1,7 @@
 package com.internship.ems.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.internship.ems.listener.SalaryListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "salary", schema = "EMS")
 @Data
+@EntityListeners(SalaryListener.class)
 public class Salary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +36,13 @@ public class Salary {
         return employee;
     }
 
-    @PreRemove
-    public void PreRemove(){
-        System.out.println("Entity "+this+" will be removed.");
-    }
-
-    @PostRemove
-    public void PostRemove(){
-        System.out.println("Entity "+this+" was removed.");
-    }
+//    @PreRemove
+//    public void PreRemove(){
+//        System.out.println("Entity "+this+" will be removed.");
+//    }
+//
+//    @PostRemove
+//    public void PostRemove(){
+//        System.out.println("Entity "+this+" was removed.");
+//    }
 }

@@ -25,7 +25,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-@Validated
 public class ProjectController {
     @Autowired
     ProjectService service;

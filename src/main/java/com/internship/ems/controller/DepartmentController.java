@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@Validated
 public class DepartmentController {
     @Autowired
     DepartmentService service;
@@ -33,6 +32,8 @@ public class DepartmentController {
     public DepartmentDto getById(@PathVariable Long id){
         return service.getById(id);
     }
+
+
 
     @PostMapping("/addDepartment")
     public ResponseEntity<DepartmentDto> setLaptop(@RequestBody DepartmentDto departmentDto){

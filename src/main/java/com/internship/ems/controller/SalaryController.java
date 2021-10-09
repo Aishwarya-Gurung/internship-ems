@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-@Validated
 public class SalaryController {
     @Autowired
     SalaryService service;
