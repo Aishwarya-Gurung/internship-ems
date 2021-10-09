@@ -36,7 +36,7 @@ public class DepartmentController {
 
 
     @PostMapping("/addDepartment")
-    public ResponseEntity<DepartmentDto> setLaptop(@RequestBody DepartmentDto departmentDto){
+    public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto){
         return new ResponseEntity<DepartmentDto>(
                 service.saveDepartment(departmentDto), HttpStatus.CREATED);
     }
